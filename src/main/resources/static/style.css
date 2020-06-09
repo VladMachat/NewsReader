@@ -1,0 +1,85 @@
+/* 
+    Created on : 29-Feb-2016, 09:21:13
+    Author     : Atrament
+*/
+a:link {
+    text-decoration: none;
+    text-align: left;
+    color: white;
+
+}
+
+a:visited {
+    color: white;
+}
+
+.entry {
+    background: black;
+    text-decoration: none;
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+
+    padding: 10px 10px 10px 10px;
+    margin : 10px 0px 10px 0px;
+
+}
+
+.entry-title {
+    font-size: 12pt;
+    color: cyan;
+}
+
+.entry-details {
+    font-size:9pt;
+    color:yellow;
+}
+
+.entry-description {
+    font-size:11pt;
+}
+
+.entry-date {
+    font-size:9pt;
+}
+
+
+body{
+    font-family: Segoe Ui;
+    background:black;
+    left:0;
+    right: 0;
+    margin: 10px auto;
+    color: white;
+    max-width: 800px;
+
+}
+
+
+a.float {
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color:#0C9;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size: 120%;
+    
+}
+
+.my-float {
+    margin-top:22px;
+
+}
+
+@media only screen and (max-width: 850px) {
+  body {
+    margin: 5px 5px;
+  }
+  .entry {
+      margin : 10px 5px;
+  }
+}

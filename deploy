@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#stop the service on remote server
+echo "Stoping the newsreader service"
+ssh root@atramentovo.net -p 50666 "service newsreader stop"
+
+#remove old version
+echo "Backing up the old version"
+ssh root@atramentovo.net -p 50666 "mv -f /opt/newsreader/NewsReader-0.0.1.jar /opt/newsreader/NewsReader-0.0.1.jar-backup"
+
+#upload new version
+echo "Uploading the new version"
+scp -P50666 target/NewsReader-0.0.1.jar root@atramentovo.net:/opt/newsreader
+
+#start the service
+echo "Starting the newsreader service"
+ssh root@atramentovo.net -p 50666 "service newsreader start"

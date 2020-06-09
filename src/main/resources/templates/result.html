@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Atrament's News</title>
+        <!--<link rel="stylesheet" href="../static/style.css" type="text/css" th:href="@{style.css}"/>-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    </head>
+    <body>
+        <p> The channel <span th:text="${channel.name}" /> has been added.</p>
+       <a th:href="@{/admin/list}">Go back to the list of channels</a>
+    </body>
+</html>

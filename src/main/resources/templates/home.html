@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Atrament's News</title>
+        <link rel="stylesheet" href="../static/style.css" type="text/css" th:href="@{style.css}"/>
+        <link rel="stylesheet" href="../static/fontawesome/css/fontawesome.min.css" type="text/css" th:href="@{/fontawesome/css/fontawesome.min.css}"/>
+        <link rel="stylesheet" href="../static/fontawesome/css/solid.min.css" type="text/css" th:href="@{/fontawesome/css/solid.min.css}"/>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+        
+    </head>
+    <body>
+        <div th:each="entry : ${entries}">
+            <a th:href="${entry.link}">
+                <div class="entry">
+                    <p class="entry-title" th:text="${entry.title}">Entry title</p>
+                    <p class="entry-details" th:text="${entry.details}">Entry details</p>
+                    <p class="entry-date" th:text="${entry.publishedDateString}">Date</p>
+                    <p class="entry-description" th:text="${entry.description}">Entry description</p>
+                </div>  
+            </a>
+        </div>
+        <a href="/admin" class="float">
+            <i class="fas fa-cog my-float"></i>
+        </a>
+    </body>
+</html>
