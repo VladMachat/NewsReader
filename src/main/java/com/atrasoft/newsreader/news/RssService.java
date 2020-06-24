@@ -44,6 +44,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +56,13 @@ import org.springframework.stereotype.Service;
 public class RssService {
 
     private final FeedChannelRepository feedChannelRepository;
-    private volatile List<Entry> entries;
+    private List<Entry> entries;
     private LocalDateTime lastUpdate;
+    private final Logger log = Logger.getLogger(this.toString());
+    
+    @Autowired
+    private Environment env;
 
-//    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-//            .withLocale(new Locale("de"));
-//    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd. MMMM yyyy hh:mm", Locale.getDefault());
     @Value("${daysBack}")
     private int daysBack;
 
@@ -83,7 +85,8 @@ public class RssService {
 
     @Scheduled(fixedDelayString = "${refresh}")
     public final void update() {
-        Logger.getLogger(this.getClass().getName()).info("Updating entries");
+        log.info("Updating entries");
+        log.log(Level.INFO, "Active profile: {0}", env.getActiveProfiles());
         List<Entry> newEntries = new ArrayList<>();
 
         SyndFeedInput input = new SyndFeedInput();
@@ -93,14 +96,13 @@ public class RssService {
         calendar.add(Calendar.DAY_OF_MONTH, daysBack);
         Date limit = calendar.getTime();
 
-        feedChannelRepository.getFeedsByActive(true).stream().forEach((feedChannel) -> {
+        feedChannelRepository.getFeedsByActive(true).stream().forEach(feedChannel -> {
             try {
                 SyndFeed feed = input.build(new XmlReader(new URL(feedChannel.getUrl())));
-                System.out.println("Entries: " + feed.getEntries().size());
-                feed.getEntries().stream().filter((sei) -> (sei.getPublishedDate().after(limit))).forEach((sei) -> {
-                    newEntries.add(new Entry(feedChannel.getName(), sei));
-                });
-                //Logger.getLogger(this.getClass().getSimpleName()).info("Adding entry: " + sei.getTitle());
+                log.log(Level.INFO, "Entries: {0}", feed.getEntries().size());
+                feed.getEntries().stream().filter(sei -> (sei.getPublishedDate().after(limit))).forEach(sei
+                        -> newEntries.add(new Entry(feedChannel.getName(), sei))
+                );
 
             } catch (IOException | IllegalArgumentException | FeedException ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
