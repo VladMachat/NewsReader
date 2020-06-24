@@ -36,22 +36,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class AdminController {
-    
+
     private final FeedChannelRepository feedChannelRepository;
 
     @Autowired
     public AdminController(FeedChannelRepository feedChannelRepository) {
         this.feedChannelRepository = feedChannelRepository;
     }
-    
-    @RequestMapping(value={"/admin/list"}, method = RequestMethod.GET)
+
+    @RequestMapping(value = {"/admin/list"}, method = RequestMethod.GET)
     public String listChannels(Map<String, Object> model) {
         model.put("channels", feedChannelRepository.findAll());
         return "ListChannels";
     }
-    
-    
-    
-    
-    
+
 }
