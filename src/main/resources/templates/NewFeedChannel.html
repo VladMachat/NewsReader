@@ -11,7 +11,8 @@
     <body>
         <a class="btn btn-primary" th:href="@{/admin/list}">Go back</a>
         <h1>Add new feed channel</h1>
-        <form action="#" method="post" th:object="${channel}" th:action="@{/admin/channel/add}">
+        <form action="#" method="post" th:object="${channel}" th:action="@{/admin/channel/save}">
+            <input type="hidden" th:field="*{id}" />
             <div class="form-group">
                 <label for="sourceInput">Feed channel name:</label><input type="text" class="form-control" id="sourceInput" th:field="*{name}" />
             </div>
