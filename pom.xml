@@ -23,7 +23,7 @@ MA 02110-1301  USA
 
     <groupId>com.atrasoft</groupId>
     <artifactId>NewsReader</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>NewsReader</name>
