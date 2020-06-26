@@ -42,11 +42,9 @@ public class Entry implements Comparable<Entry> {
     private String description;
     private String author;
     private LocalDateTime publishedDate;
-    private String publishedDateString;
     private String details;
     private String link;
     private String thumbnail;
-    private int pokus;
 
     Entry(String source, SyndEntry sei) {
         this.title = filterOutHtml(sei.getTitle());
@@ -144,21 +142,6 @@ public class Entry implements Comparable<Entry> {
     public String getPublishedDateString() {
         //TODO get the locale from properties
         return publishedDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withLocale(Locale.forLanguageTag("cs-CZ")));
-        //return publishedDate.format(DateTimeFormatter.ofPattern("dd. MMMM yyyy hh:mm", Locale.forLanguageTag("cs-CZ")));
-    }
-
-    /**
-     * @return the pokus
-     */
-    public int getPokus() {
-        return pokus;
-    }
-
-    /**
-     * @param pokus the pokus to set
-     */
-    public void setPokus(int pokus) {
-        this.pokus = pokus;
     }
 
 }
