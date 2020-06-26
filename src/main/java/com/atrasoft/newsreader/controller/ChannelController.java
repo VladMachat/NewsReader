@@ -47,23 +47,23 @@ public class ChannelController {
     private RssService rssService;
     
     @RequestMapping("/admin/channel/detail")
-    public String getDetails(@RequestParam Integer id, Model map) {
-        map.addAttribute("channel", feedChannelRepository.getFeedChannelById(id));
-        return "ChannelDetails";
+    public String getDetails(@RequestParam Integer id, Model model) {
+        model.addAttribute("channel", feedChannelRepository.getFeedChannelById(id));
+        return "NewFeedChannel";
     }
-    
-    @RequestMapping(value="/admin/channel/add", method = RequestMethod.GET)
+       
+    @RequestMapping(value="/admin/channel/save", method = RequestMethod.GET)
     public String addNew(Model model) {
         model.addAttribute("channel", new FeedChannel());
         return "NewFeedChannel";
     }
     
-    @RequestMapping(value="/admin/channel/add", method = RequestMethod.POST)
-    public String addNewSubmit(@ModelAttribute FeedChannel channel, Model model) {
+    @RequestMapping(value="/admin/channel/save", method = RequestMethod.POST)
+    public String save(@ModelAttribute FeedChannel channel, Model model) {
+        model.addAttribute("channel", channel);
         feedChannelRepository.save(channel);
         rssService.update();
-        model.addAttribute("channel", channel);
-        return "result";
+        return "redirect:/admin/list";
     }
     
 }
