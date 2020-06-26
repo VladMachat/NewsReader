@@ -11,7 +11,7 @@
     <body>
         <a class="btn btn-primary" th:href="@{/}">Home</a>
         <h1>Feed channels</h1>
-        <a class="btn btn-primary" th:href="@{/admin/channel/add}">Add new channel</a>
+        <a class="btn btn-primary" th:href="@{/admin/channel/save}">Add new channel</a>
         <table class="table">
             <tr th:each="channel : ${channels}"><td><span th:text="${channel.name}" /></td><td><a th:href="@{/admin/channel/detail(id=${channel.id})}">Edit details</a></td><td><a th:href="@{/admin/channel/delete(id=${channel.id})}">Delete feed channel</a></td></tr>
         </table>
