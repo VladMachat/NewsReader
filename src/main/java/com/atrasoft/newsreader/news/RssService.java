@@ -121,7 +121,7 @@ public class RssService {
         return lastUpdate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withLocale(Locale.forLanguageTag(locale)));
     }
 
-    public long getMinutesAgo() {
+    public long getMinutesFromLastUpdate() {
         return ChronoUnit.MINUTES.between(lastUpdate, LocalDateTime.now());
     }
 
