@@ -40,30 +40,37 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ChannelController {
-    
+
     @Autowired
     private FeedChannelRepository feedChannelRepository;
-    @Autowired 
+    @Autowired
     private RssService rssService;
-    
+
     @RequestMapping("/admin/channel/detail")
     public String getDetails(@RequestParam Integer id, Model model) {
         model.addAttribute("channel", feedChannelRepository.getFeedChannelById(id));
         return "NewFeedChannel";
     }
-       
-    @RequestMapping(value="/admin/channel/save", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/admin/channel/save", method = RequestMethod.GET)
     public String addNew(Model model) {
         model.addAttribute("channel", new FeedChannel());
         return "NewFeedChannel";
     }
-    
-    @RequestMapping(value="/admin/channel/save", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/admin/channel/save", method = RequestMethod.POST)
     public String save(@ModelAttribute FeedChannel channel, Model model) {
         model.addAttribute("channel", channel);
         feedChannelRepository.save(channel);
         rssService.update();
         return "redirect:/admin/list";
     }
-    
+
+    @RequestMapping("/admin/channel/delete")
+    public String delete(@RequestParam Integer id, Model model) {
+        FeedChannel channel = feedChannelRepository.getFeedChannelById(id);
+        feedChannelRepository.delete(channel);
+        rssService.update();
+        return "redirect:/admin/list";
+    }
 }
