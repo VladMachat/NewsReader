@@ -40,11 +40,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -58,10 +58,7 @@ public class RssService {
     private final FeedChannelRepository feedChannelRepository;
     private List<Entry> entries;
     private LocalDateTime lastUpdate;
-    private final Logger log = Logger.getLogger(this.toString());
-    
-    @Autowired
-    private Environment env;
+    private final Logger log = LoggerFactory.getLogger(this.toString());
 
     @Value("${daysBack}")
     private int daysBack;
@@ -80,32 +77,27 @@ public class RssService {
 
     public List<Entry> getEntries() {
         return entries;
-
     }
 
     @Scheduled(fixedDelayString = "${refresh}")
     public final void update() {
         log.info("Updating entries");
-        log.log(Level.INFO, "Active profile: {0}", env.getActiveProfiles());
         List<Entry> newEntries = new ArrayList<>();
-
         SyndFeedInput input = new SyndFeedInput();
-
         Calendar calendar = new GregorianCalendar();
-
         calendar.add(Calendar.DAY_OF_MONTH, daysBack);
         Date limit = calendar.getTime();
 
         feedChannelRepository.getFeedsByActive(true).stream().forEach(feedChannel -> {
             try {
                 SyndFeed feed = input.build(new XmlReader(new URL(feedChannel.getUrl())));
-                log.log(Level.INFO, "Entries: {0}", feed.getEntries().size());
+                log.info("Entries: {0}", feed.getEntries().size());
                 feed.getEntries().stream().filter(sei -> (sei.getPublishedDate().after(limit))).forEach(sei
                         -> newEntries.add(new Entry(feedChannel.getName(), sei))
                 );
 
             } catch (IOException | IllegalArgumentException | FeedException ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                log.error(ex.getMessage());
             }
         });
         Collections.sort(newEntries);
